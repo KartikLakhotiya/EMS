@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @Slf4j
 @AllArgsConstructor
 @RestController
@@ -51,13 +52,7 @@ public class EmployeeController {
     @GetMapping
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees(){
         List<EmployeeDTO> employees = employeeService.getAllEmployees();
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            String json = mapper.writeValueAsString(employees);
-            System.out.println("getAllEmployee API called | List of all employees: " + json);
-        } catch (Exception e) {
-            log.error("e: ", e);
-        }
+        System.out.println("getAllEmployees API called");
         return ResponseEntity.ok(employees);
     }
 
