@@ -1,15 +1,15 @@
 package net.javaguide.ems.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.javaguide.ems.dto.EmployeeDTO;
 import net.javaguide.ems.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+@Slf4j
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/employees")
@@ -17,11 +17,32 @@ public class EmployeeController {
 
     private EmployeeService employeeService;
 
+    // Create Employee REST API
     @PostMapping("/create")
     public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeDTO employeeDTO){
-        System.out.println("createEmployee API called | " + "New Employee Created : " + employeeDTO.getFirstName());
         EmployeeDTO savedEmployee = employeeService.createEmployee(employeeDTO);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String json = mapper.writeValueAsString(savedEmployee);
+            System.out.println("createEmployee API called | Employee Created: " + json);
+        } catch (Exception e) {
+            log.error("e: ", e);
+        }
         return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
+    }
+
+    // Get Employee REST API
+    @GetMapping("/get/{id}")
+    public ResponseEntity<EmployeeDTO> getEmployee(@PathVariable("id") Long employeeId){
+        EmployeeDTO employeeDTO = employeeService.getEmployeeById(employeeId);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String json = mapper.writeValueAsString(employeeDTO);
+            System.out.println("getEmployee API called | Employee Fetched: " + json);
+        } catch (Exception e) {
+            log.error("e: ", e);
+        }
+        return ResponseEntity.ok(employeeDTO);
     }
 
 }
