@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.List;
+
 @Slf4j
 @AllArgsConstructor
 @RestController
@@ -43,6 +45,20 @@ public class EmployeeController {
             log.error("e: ", e);
         }
         return ResponseEntity.ok(employeeDTO);
+    }
+
+    // Get All Employees REST API
+    @GetMapping
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployees(){
+        List<EmployeeDTO> employees = employeeService.getAllEmployees();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String json = mapper.writeValueAsString(employees);
+            System.out.println("getAllEmployee API called | List of all employees: " + json);
+        } catch (Exception e) {
+            log.error("e: ", e);
+        }
+        return ResponseEntity.ok(employees);
     }
 
 }
