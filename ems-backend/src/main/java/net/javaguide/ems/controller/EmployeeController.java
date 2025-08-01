@@ -61,4 +61,19 @@ public class EmployeeController {
         return ResponseEntity.ok(employees);
     }
 
+    // Update Employee REST API
+    @PutMapping("/update/{id}")
+    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable("id") Long employeeId, @RequestBody EmployeeDTO updatedEmployee){
+        System.out.println("updatedEmployee API called | " + "Employee updated with ID : " + employeeId);
+        EmployeeDTO employeeDTO = employeeService.updateEmployee(employeeId,updatedEmployee);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String json = mapper.writeValueAsString(employeeDTO);
+            System.out.println("Updated Employee " + json);
+        } catch (Exception e) {
+            log.error("e: ", e);
+        }
+        return ResponseEntity.ok(employeeDTO);
+    }
+
 }
