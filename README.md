@@ -1,4 +1,4 @@
-# 🧑 Employee Management System (EMS)
+#  Employee Management System (EMS)
 
 A simple **RESTful API** built with **Spring Boot**, designed to manage employee records with basic CRUD operations.
 
