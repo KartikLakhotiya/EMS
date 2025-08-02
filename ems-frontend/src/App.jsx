@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
 import ListEmployeeComponent from './components/ListEmployeeComponent'
-import AddEmployee from './components/AddEmployee';
+import EmployeeComponent from './components/EmployeeComponent';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -13,7 +13,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<ListEmployeeComponent />} />
-        <Route path="/create" element={<AddEmployee />} />
+        <Route path="/add-employee" element={<EmployeeComponent />} />
+        <Route path="/edit-employee/:id" element={<EmployeeComponent />} />
 
       </Routes>
     </Router>

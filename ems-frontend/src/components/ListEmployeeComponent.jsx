@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getEmployees } from '../services/EmployeeService';
+import { deleteEmployee, getEmployees } from '../services/EmployeeService';
 import { useNavigate } from 'react-router-dom';
 
 const ListEmployeeComponent = () => {
@@ -8,15 +8,31 @@ const ListEmployeeComponent = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        getAllEmployees();
+    }, []);
+
+    const getAllEmployees = () => {
         getEmployees().then((response) => {
             setEmployees(response.data);
         }).catch((error) => {
             console.error("Error fetching employees:", error);
         });
-    }, []);
+    }
 
     const addNewEmployee = () => {
-        navigate('/create');
+        navigate('/add-employee');
+    }
+
+    const updateEmployee = (id) => {
+        navigate(`/edit-employee/${id}`);
+    }
+
+    const removeEmployee = (id) => {
+        deleteEmployee(id).then((response) => {
+            getAllEmployees();
+        }).catch((error) => {
+            console.error("Error deleting employee:", error);
+        });
     }
 
 
@@ -31,6 +47,7 @@ const ListEmployeeComponent = () => {
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Email ID</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,6 +58,10 @@ const ListEmployeeComponent = () => {
                                 <td>{employee.firstName}</td>
                                 <td>{employee.lastName}</td>
                                 <td>{employee.email}</td>
+                                <td>
+                                    <button className='btn btn-info' onClick={() => updateEmployee(employee.id)}>Update</button>
+                                    <button className='btn btn-danger' onClick={() => removeEmployee(employee.id)} style={{ marginLeft: '10px' }}>Delete</button>
+                                </td>
                             </tr>)
                     }
                 </tbody>
