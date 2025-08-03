@@ -3,8 +3,8 @@ import { deleteEmployee, getEmployees } from '../services/EmployeeService';
 import { useNavigate } from 'react-router-dom';
 
 const ListEmployeeComponent = () => {
-
     const [employees, setEmployees] = useState([]);
+    const [deletingId, setDeletingId] = useState(null); // <-- Added
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -28,13 +28,15 @@ const ListEmployeeComponent = () => {
     }
 
     const removeEmployee = (id) => {
-        deleteEmployee(id).then((response) => {
+        setDeletingId(id); // Start loading
+        deleteEmployee(id).then(() => {
             getAllEmployees();
         }).catch((error) => {
             console.error("Error deleting employee:", error);
+        }).finally(() => {
+            setDeletingId(null); // Stop loading
         });
     }
-
 
     return (
         <div className='container'>
@@ -59,8 +61,20 @@ const ListEmployeeComponent = () => {
                                 <td>{employee.lastName}</td>
                                 <td>{employee.email}</td>
                                 <td>
-                                    <button className='btn btn-info' onClick={() => updateEmployee(employee.id)}>Update</button>
-                                    <button className='btn btn-danger' onClick={() => removeEmployee(employee.id)} style={{ marginLeft: '10px' }}>Delete</button>
+                                    <button
+                                        className='btn btn-info'
+                                        onClick={() => updateEmployee(employee.id)}
+                                    >
+                                        Update
+                                    </button>
+                                    <button
+                                        className='btn btn-danger'
+                                        onClick={() => removeEmployee(employee.id)}
+                                        style={{ marginLeft: '10px' }}
+                                        disabled={deletingId === employee.id}
+                                    >
+                                        {deletingId === employee.id ? 'Deleting...' : 'Delete'}
+                                    </button>
                                 </td>
                             </tr>)
                     }
