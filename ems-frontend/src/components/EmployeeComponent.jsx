@@ -2,64 +2,47 @@ import React, { useEffect, useState } from 'react';
 import { createEmployee, getEmployeeById, updateEmployee } from '../services/EmployeeService';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const EmployeeComponent = () => {
-
+const EmployeeComponent = ({ darkMode }) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
-    const [loading, setLoading] = useState(false); // <-- New loading state
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { id } = useParams();
 
     const saveEmployee = (e) => {
         e.preventDefault();
-        setLoading(true); // Start loader
-
+        setLoading(true);
         const employee = { firstName, lastName, email };
 
-        if (id) {
-            updateEmployee(id, employee).then((response) => {
-                console.log("Employee updated successfully:", response.data);
-                navigate('/');
-            }).catch((error) => {
-                console.error("Error updating employee:", error);
-            }).finally(() => {
-                setLoading(false);
-            });
-        } else {
-            createEmployee(employee).then((response) => {
-                console.log("Employee created successfully:", response.data);
-                navigate('/');
-            }).catch((error) => {
-                console.error("Error creating employee:", error);
-            }).finally(() => {
-                setLoading(false);
-            });
-        }
-    };
+        const action = id ? updateEmployee(id, employee) : createEmployee(employee);
 
-    const pageTitle = () => {
-        return <h2 className='text-center mt-2'>{id ? 'Update Employee' : 'Add Employee'}</h2>;
-    }
+        action.then(() => navigate('/'))
+            .catch(console.error)
+            .finally(() => setLoading(false));
+    };
 
     useEffect(() => {
         if (id) {
-            getEmployeeById(id).then((response) => {
-                const employee = response.data;
-                setFirstName(employee.firstName);
-                setLastName(employee.lastName);
-                setEmail(employee.email);
-            }).catch((error) => {
-                console.error("Error fetching employee details:", error);
-            });
+            getEmployeeById(id).then(response => {
+                const { firstName, lastName, email } = response.data;
+                setFirstName(firstName);
+                setLastName(lastName);
+                setEmail(email);
+            }).catch(console.error);
         }
     }, [id]);
 
     return (
         <div className='container mt-2'>
             <div className='row'>
-                <div className='card col-md-6 offset-md-3 offset-md-3'>
-                    {pageTitle()}
+                <div
+                    className={`card col-md-6 offset-md-3 offset-md-3 
+                        ${darkMode ? 'bg-dark text-light border-light' : ''}`}
+                >
+                    <h2 className='text-center mt-2'>
+                        {id ? 'Update Employee' : 'Add Employee'}
+                    </h2>
                     <div className='card-body'>
                         <form>
                             <div className='form-group mb-2'>
