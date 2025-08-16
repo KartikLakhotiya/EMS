@@ -2,8 +2,6 @@
 
 A simple **RESTful API** built with **Spring Boot** and a **React** frontend, designed to manage employee records with basic CRUD operations.
 
----
-
 ## Features
 
 * Create new employees
@@ -14,8 +12,6 @@ A simple **RESTful API** built with **Spring Boot** and a **React** frontend, de
 * Entity persistence using Spring Data JPA
 * Uses MySQL (or H2) for data storage
 * React frontend using **Vite** and **Bootstrap**
-
----
 
 ## Technologies Used
 
@@ -33,8 +29,6 @@ A simple **RESTful API** built with **Spring Boot** and a **React** frontend, de
 * **React**
 * **Vite**
 * **Bootstrap 5**
-
----
 
 ## Getting Started
 
@@ -92,8 +86,6 @@ npm run dev
 
 The app will be served at `http://localhost:5173`
 
----
-
 ## API Endpoints
 
 | Method | Endpoint                | Description         |
@@ -114,8 +106,6 @@ The app will be served at `http://localhost:5173`
 }
 ```
 
----
-
 ## Testing
 
 You can test the backend using:
@@ -126,8 +116,6 @@ You can test the backend using:
 
 The frontend can be tested by navigating to the form page and submitting employee data.
 
----
-
 ## Notes
 
 * Ensure Lombok is enabled in your IDE.
@@ -136,20 +124,13 @@ The frontend can be tested by navigating to the form page and submitting employe
 * React frontend uses `fetch` or `axios` to POST data to the backend.
 * Create ems database in your MYSQL server.
 
-
----
-
 ## Contributing
 
 Feel free to fork this repo and submit a pull request for improvements or features.
 
----
-
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-
----
 
 ## Author
 
