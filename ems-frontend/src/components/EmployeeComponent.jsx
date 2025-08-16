@@ -7,7 +7,7 @@ const EmployeeComponent = ({ darkMode }) => {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false); // for submit
-    const [pageLoading, setPageLoading] = useState(false); // for fetching details
+    const [pageLoading, setPageLoading] = useState(!!useParams().id); // start true if updating
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -25,7 +25,6 @@ const EmployeeComponent = ({ darkMode }) => {
 
     useEffect(() => {
         if (id) {
-            setPageLoading(true);
             getEmployeeById(id)
                 .then(response => {
                     const { firstName, lastName, email } = response.data;
@@ -50,15 +49,15 @@ const EmployeeComponent = ({ darkMode }) => {
     }
 
     return (
-        <div className='container mt-2'>
-            <div className='row'>
+        <div className='container d-flex justify-content-center align-items-center' style={{ minHeight: "100vh" }}>
+            <div className='row w-100'>
+                <h2 className='text-center mt-2'>
+                    {id ? 'Update Employee' : 'Add Employee'}
+                </h2>
                 <div
-                    className={`card col-md-6 offset-md-3 offset-md-3 
-                        ${darkMode ? 'bg-dark text-light border-light' : ''}`}
+                    className={`card col-md-6 offset-md-3 
+                    ${darkMode ? 'bg-dark text-light border-light' : ''}`}
                 >
-                    <h2 className='text-center mt-2'>
-                        {id ? 'Update Employee' : 'Add Employee'}
-                    </h2>
                     <div className='card-body'>
                         <form>
                             <div className='form-group mb-2'>
@@ -66,7 +65,7 @@ const EmployeeComponent = ({ darkMode }) => {
                                 <input
                                     type="text"
                                     placeholder='Enter First Name'
-                                    className='form-control'
+                                    className={`form-control ${darkMode ? 'bg-dark border-secondary text-light placeholder-gray' : ''}`}
                                     value={firstName}
                                     onChange={(e) => setFirstName(e.target.value)}
                                 />
@@ -76,7 +75,7 @@ const EmployeeComponent = ({ darkMode }) => {
                                 <input
                                     type="text"
                                     placeholder='Enter Last Name'
-                                    className='form-control'
+                                    className={`form-control ${darkMode ? 'bg-dark border-secondary text-light placeholder-gray' : ''}`}
                                     value={lastName}
                                     onChange={(e) => setLastName(e.target.value)}
                                 />
@@ -86,7 +85,7 @@ const EmployeeComponent = ({ darkMode }) => {
                                 <input
                                     type="email"
                                     placeholder='Enter Email'
-                                    className='form-control'
+                                    className={`form-control ${darkMode ? 'bg-dark border-secondary text-light placeholder-gray' : ''}`}
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
@@ -105,6 +104,7 @@ const EmployeeComponent = ({ darkMode }) => {
                             </button>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>

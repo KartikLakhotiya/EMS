@@ -2,3 +2,8 @@ body.dark {
   background-color: #121212;
   color: #ffffff;
 }
+
+.placeholder-gray::placeholder {
+  color: #aaa !important;
+  opacity: 1; /* ensures consistent visibility */
+}
