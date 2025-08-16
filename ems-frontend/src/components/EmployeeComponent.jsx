@@ -6,15 +6,16 @@ const EmployeeComponent = ({ darkMode }) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false); // for submit
+    const [pageLoading, setPageLoading] = useState(false); // for fetching details
     const navigate = useNavigate();
     const { id } = useParams();
 
     const saveEmployee = (e) => {
         e.preventDefault();
         setLoading(true);
-        const employee = { firstName, lastName, email };
 
+        const employee = { firstName, lastName, email };
         const action = id ? updateEmployee(id, employee) : createEmployee(employee);
 
         action.then(() => navigate('/'))
@@ -24,14 +25,29 @@ const EmployeeComponent = ({ darkMode }) => {
 
     useEffect(() => {
         if (id) {
-            getEmployeeById(id).then(response => {
-                const { firstName, lastName, email } = response.data;
-                setFirstName(firstName);
-                setLastName(lastName);
-                setEmail(email);
-            }).catch(console.error);
+            setPageLoading(true);
+            getEmployeeById(id)
+                .then(response => {
+                    const { firstName, lastName, email } = response.data;
+                    setFirstName(firstName);
+                    setLastName(lastName);
+                    setEmail(email);
+                })
+                .catch(console.error)
+                .finally(() => setPageLoading(false));
         }
     }, [id]);
+
+    if (pageLoading) {
+        // show spinner while fetching existing employee
+        return (
+            <div className="d-flex justify-content-center align-items-center" style={{ height: "60vh" }}>
+                <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className='container mt-2'>
@@ -80,7 +96,12 @@ const EmployeeComponent = ({ darkMode }) => {
                                 onClick={saveEmployee}
                                 disabled={loading}
                             >
-                                {loading ? 'Submitting...' : 'Submit'}
+                                {loading ? (
+                                    <>
+                                        <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                                        Submitting...
+                                    </>
+                                ) : 'Submit'}
                             </button>
                         </form>
                     </div>
