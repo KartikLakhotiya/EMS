@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Collections.*;
 
 import java.util.List;
 
@@ -77,6 +78,13 @@ public class EmployeeController {
         employeeService.deleteEmployee(employeeId);
         System.out.println("deleteEmployee API called | " + "Employee delete with ID : " + employeeId);
         return ResponseEntity.ok("Employee Deleted Successfully | ID : " + employeeId);
+    }
+
+    @GetMapping("/v1")
+    public ResponseEntity<?> apiStatus() {
+        return ResponseEntity.ok().body(
+                java.util.Collections.singletonMap("message", "API running successfully")
+        );
     }
 
 }
