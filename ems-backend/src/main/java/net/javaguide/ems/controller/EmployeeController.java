@@ -21,6 +21,14 @@ public class EmployeeController {
 
     private EmployeeService employeeService;
 
+    //ping API
+    @GetMapping("/v1")
+    public ResponseEntity<?> apiStatus() {
+        return ResponseEntity.ok().body(
+                java.util.Collections.singletonMap("message", "API running successfully")
+        );
+    }
+
     // Create Employee REST API
     @PostMapping("/create")
     public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeDTO employeeDTO){
@@ -79,12 +87,4 @@ public class EmployeeController {
         System.out.println("deleteEmployee API called | " + "Employee delete with ID : " + employeeId);
         return ResponseEntity.ok("Employee Deleted Successfully | ID : " + employeeId);
     }
-
-    @GetMapping("/v1")
-    public ResponseEntity<?> apiStatus() {
-        return ResponseEntity.ok().body(
-                java.util.Collections.singletonMap("message", "API running successfully")
-        );
-    }
-
 }
